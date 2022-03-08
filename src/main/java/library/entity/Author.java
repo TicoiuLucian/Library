@@ -1,6 +1,7 @@
 package library.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,9 +28,13 @@ public class Author {
     @Column(nullable = false, length = 30)
     private String birthPlace;
 
-//    @ToString.Exclude
-//    @ManyToMany(mappedBy = "authors")
-//    private Set<Book> books;
+    @OneToOne(cascade = CascadeType.ALL)
+    private ContactDetails contactDetails;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany(mappedBy = "authors", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private Set<Book> books;
 
 
 }

@@ -20,20 +20,24 @@ public class Book {
     @Column(nullable = false, length = 30, unique = true)
     private String bookTitle;
 
-    @ManyToMany
-    private Set<Author> authors;
-
-    @ManyToOne
-    private PublishingHouse publishingHouse;
-
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = BookGenre.class)
-    private Set<BookGenre> bookGenre;
-
     @Column(nullable = false, length = 4)
     private Integer pages;
 
     @Column(nullable = false, length = 20)
     private String language;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private PublishingHouse publishingHouse;
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = BookGenre.class)
+    private Set<BookGenre> bookGenre;
 
 }

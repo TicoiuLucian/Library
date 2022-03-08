@@ -1,14 +1,12 @@
 package library.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Setter
@@ -32,4 +30,14 @@ public class ContactDetails {
 
     @Column(nullable = false)
     private String address;
+
+    @OneToOne(mappedBy = "contactDetails")
+    @JsonIgnore
+    private PublishingHouse publishingHouse;
+
+    @OneToOne(mappedBy = "contactDetails")
+    @JsonIgnore
+    private Author author;
+
+
 }

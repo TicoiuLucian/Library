@@ -1,5 +1,6 @@
 package library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,9 +24,10 @@ public class PublishingHouse {
     @Column(nullable = false, length = 4)
     private Integer foundingYear;
 
-    @OneToOne
-    private ContactDetails contactDetails;
-
     @OneToMany(mappedBy = "publishingHouse")
+    @JsonIgnore
     private Set<Book> books;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private ContactDetails contactDetails;
 }
