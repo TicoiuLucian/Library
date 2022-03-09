@@ -25,6 +25,9 @@ public class Author {
     @Column(nullable = false, length = 30)
     private String firstName;
 
+    @Column(nullable = false, length = 30)
+    private String birthPlace;
+
     @OneToOne(cascade = CascadeType.ALL)
     private ContactDetails contactDetails;
 
@@ -32,10 +35,6 @@ public class Author {
     @JsonIgnore
     @ManyToMany(mappedBy = "authors", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<Book> books;
-
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = BirthPlace.class)
-    private Set<BirthPlace> birthPlaces;
 
 
 }
