@@ -35,6 +35,6 @@ public class Author {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = BirthPlace.class)
-    private Set<BirthPlace> birthPlace;
+    private BirthPlace birthPlace;
 
 }
