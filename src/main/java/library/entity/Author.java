@@ -34,7 +34,6 @@ public class Author {
     private Set<Book> books;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = BirthPlace.class)
     private BirthPlace birthPlace;
 
 }
