@@ -25,12 +25,12 @@ public class Author {
     @Column(nullable = false, length = 30)
     private String firstName;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private ContactDetails contactDetails;
 
     @ToString.Exclude
     @JsonIgnore
-    @ManyToMany(mappedBy = "authors", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(mappedBy = "authors")
     private Set<Book> books;
 
     @Enumerated(EnumType.STRING)
