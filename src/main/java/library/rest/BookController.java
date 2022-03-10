@@ -9,12 +9,13 @@ import library.repository.BookRepository;
 import library.repository.ContactDetailsRepository;
 import library.repository.PublishingHouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
-@RestController
+@Controller
 public class BookController {
 
     @Autowired
@@ -30,7 +31,7 @@ public class BookController {
     private ContactDetailsRepository contactDetailsRepository;
 
     @PostMapping(value = "/book")
-    public Book saveBook(@RequestBody Book book) {
+    public String saveBook(@RequestBody Book book) {
 
         final PublishingHouse publishingHouse = publishingHouseRepository.findByName(book.getPublishingHouse().getName());
         if (publishingHouse != null) {
@@ -58,12 +59,15 @@ public class BookController {
             }
         }
 
-        return bookRepository.save(book);
+        bookRepository.save(book);
+
+        return "all-books";
     }
 
     @GetMapping(value = "/book/all")
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public String getAllBooks(Model model) {
+        model.addAttribute("books", bookRepository.findAll());
+        return "all-books";
     }
 
     @DeleteMapping(value = "/book/{id}")
