@@ -39,5 +39,9 @@ public class ContactDetails {
     @JsonIgnore
     private Author author;
 
+    @OneToOne(mappedBy = "contactDetails")
+    @JsonIgnore
+    private MyUser user;
+
 
 }

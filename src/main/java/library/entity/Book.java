@@ -40,4 +40,7 @@ public class Book {
     @ElementCollection(targetClass = BookGenre.class)
     private Set<BookGenre> bookGenre;
 
+    @ManyToOne
+    private MyUser user;
+
 }
