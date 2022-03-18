@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserDetails buildUserForAuthentication(MyUser myUser, List<GrantedAuthority> authorities) {
         return new User(myUser.getUsername(), myUser.getPassword(),
-                true, true,true, true, authorities);
+                myUser.isEnabled(), myUser.isAccountNonExpired(),myUser.isCredentialsNonExpired(), myUser.isAccountNonLocked(), authorities);
     }
 
 }

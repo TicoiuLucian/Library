@@ -25,6 +25,9 @@ public class Author {
     @Column(nullable = false, length = 30)
     private String firstName;
 
+    @Column(nullable = false, length = 30, unique = true)
+    private String email;
+
     @OneToOne
     private ContactDetails contactDetails;
 

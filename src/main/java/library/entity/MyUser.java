@@ -41,6 +41,7 @@ public class MyUser implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private ContactDetails contactDetails;
 
+    @Column(nullable = false, length = 30, unique = true)
     private String email;
 
 
