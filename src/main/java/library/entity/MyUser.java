@@ -36,6 +36,7 @@ public class MyUser implements UserDetails {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    @Column(nullable = false, length = 30)
     private String fullName;
 
     @OneToOne(cascade = CascadeType.ALL)
