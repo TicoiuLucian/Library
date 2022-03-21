@@ -53,6 +53,9 @@ public class MyUser implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Book> books;
 
+    @Transient
+    private String passwordConfirm;
+
     public MyUser(MyUser user) {
         this.enabled = user.isEnabled();
         this.contactDetails = user.getContactDetails();
@@ -64,6 +67,7 @@ public class MyUser implements UserDetails {
         this.accountNonLocked = user.isAccountNonLocked();
         this.credentialsNonExpired = user.isCredentialsNonExpired();
         this.books = user.getBooks();
+        this.email = user.getEmail();
 
 
     }
@@ -172,5 +176,13 @@ public class MyUser implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 }

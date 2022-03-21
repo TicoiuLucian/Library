@@ -1,17 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="/style.css">
     <title>Login page</title>
+    <style>
+    body{
+            padding-top: 20vh;
+        }
+    .container{
+            background: #DEB887;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto;
+            height: 250px;
+            width: 250px;
+            box-shadow: -3px -2px 6px #6c6565, 7px 9px 25px #0b0b0b;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input{
+            height: 25px;
+            border: 2px solid #e1dede69;
+            border-radius: 5px;
+            background: #FFF8DC;
+            color: black;
+            text-align: left;
+            outline: none;
+        }
+        label{
+            font-size: 20px;
+            text-align: left;
+            font-weight: bold;
+             display: block;
+            padding-top: 15px;
+            padding-bottom: 0px;
+        }
+        button{
+            margin: auto:
+            font-size: 25px;
+            padding: 8px;
+            width: 87px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            colour: rgb(75, 61, 61);
+            background: #CD853F;
+        }
+        button:disabled{
+            cursor: not-allowed;
+            background:#8f8b85 !important;
+            color: rgb(131, 120, 120) !important;
+        }
+        button:hover{
+            background: #8B4513;
+            color: antiquewhite;
+        }
+
+    </style>
 </head>
-<body>
-<h1>Login page</h1>
-<p th:if="${loginError}" class="error">Wrong user or password</p>
-<form th:action="@{/login.html}" method="post">
-    <label for="username">Username</label>:
-    <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-    <label for="password">Password</label>:
-    <input type="password" id="password" name="password" /> <br />
-    <input type="submit" value="Log in" />
-</form>
+<body style="background-color:#FFF8DC;">
+<div align="center">
+    <h1>Login page</h1>
+</div>
+<br>
+<div class="container" align="center">
+
+    <p th:if="${loginError}" class="error">Wrong user or password</p>
+    <form th:action="@{/login.html}" method="post">
+
+        <div><br>
+            <label for="username"><b>Username:</b></label>
+            <input type="text" id="username" name="username" autofocus="autofocus" placeholder="Enter username"
+                   required/>
+
+            <label for="password"><b>Password:</b></label>
+            <input type="password" id="password" name="password" placeholder="Enter password" required/>
+        </div>
+        <br>
+        <div>
+            <button type="submit" class="button"><b>Login</b></button>
+            <button onclick="location.href='/register'" type="button" class="button"><b>Register</b></button>
+        </div>
+    </form>
+</div>
 </body>
 </html>
