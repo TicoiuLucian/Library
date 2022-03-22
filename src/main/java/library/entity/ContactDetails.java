@@ -19,9 +19,6 @@ public class ContactDetails {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, length = 30, unique = true)
-    private String email;
-
     @Column(nullable = false, length = 10, unique = true)
     private String phoneNumber;
 

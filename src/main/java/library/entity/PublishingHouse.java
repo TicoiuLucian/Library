@@ -24,6 +24,9 @@ public class PublishingHouse {
     @Column(nullable = false, length = 4)
     private Integer foundingYear;
 
+    @Column(nullable = false, length = 30, unique = true)
+    private String email;
+
     @OneToMany(mappedBy = "publishingHouse")
     @JsonIgnore
     private Set<Book> books;
