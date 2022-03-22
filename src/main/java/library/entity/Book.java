@@ -26,6 +26,9 @@ public class Book {
     @Column(nullable = false, length = 20)
     private String language;
 
+    @Column
+    private boolean available;
+
     @ManyToMany
     @JoinTable(
             name = "book_author",
@@ -42,5 +45,6 @@ public class Book {
 
     @ManyToOne
     private MyUser user;
+
 
 }
