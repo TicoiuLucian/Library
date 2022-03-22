@@ -1,4 +1,4 @@
-package library.service.impl;
+package library.service.impl.user;
 
 
 import library.entity.MyUser;
