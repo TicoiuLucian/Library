@@ -1,10 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+
+    <style>
+    body{
+        background-image: url("");
+    </style>
 </head>
+
 <body>
-INDEX PAGE
+<div class="topnav" id="myTopnav">
+    <h2><a href="/home" style="color: white"> Home </a></h2>
+    <h2><a href="/book/all" style="color: white"> All Books </a></h2>
+    <h2><a href="/yourreservations" style="color: white">Your Reservations</a></h2>
+    <h2 style="float:right"><a class="active" href="/login" style="color: white">Logout</a></h2>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+
+<table id="myTable">
+    <tr class="header">
+        <th style="width:40%;">title</th>
+        <th style="width:40%;">language</th>
+        <th style="width:40%;">pages</th>
+        <th style="width:40%;">publishingHouse</th>
+    </tr>
+    <tr>
+        <td>Harry Potter 1</td>
+        <td>english</td>
+        <td>235</td>
+        <td>PH</td>
+    </tr>
+    <tr>
+        <td>Harry Potter 2</td>
+        <td>english</td>
+        <td>269</td>
+        <td>PH</td>
+    </tr>
+    <tr>
+        <td>The Lord of the Rings</td>
+        <td>french</td>
+        <td>415</td>
+        <td>RAO</td>
+    </tr>
+    <tr>
+        <td>Mr. Mercedes</td>
+        <td>deutsch</td>
+        <td>436</td>
+        <td>Hodder</td>
+    </tr>
+    <tr>
+        <td>The Tattooist of Auschwitz</td>
+        <td>deutsch</td>
+        <td>306</td>
+        <td>Echo</td>
+    </tr>
+</table>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
 </body>
 </html>
