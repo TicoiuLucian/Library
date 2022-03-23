@@ -28,7 +28,7 @@ public class Author {
     @Column(nullable = false, length = 30, unique = true)
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ContactDetails contactDetails;
 
     @ToString.Exclude

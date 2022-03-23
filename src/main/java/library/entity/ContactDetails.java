@@ -32,7 +32,7 @@ public class ContactDetails {
     @JsonIgnore
     private PublishingHouse publishingHouse;
 
-    @OneToOne(mappedBy = "contactDetails")
+    @OneToOne(mappedBy = "contactDetails", cascade = CascadeType.ALL)
     @JsonIgnore
     private Author author;
 
