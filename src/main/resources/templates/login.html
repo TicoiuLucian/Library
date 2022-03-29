@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head><br><br>
     <title>Login page</title>
 
     <link rel="stylesheet"
@@ -8,13 +8,12 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
 </head>
-<body style="background-color:#FFF8DC;">
+<body>
 <div align="center">
     <h1>Login page</h1>
 </div>
 <br>
-<div class="container" align="center">
-
+<div class="container" align="center" style="max-width:330px; margin:0 auto">
 
     <div th:if="${loginError}" class="alert alert-danger" role="alert">
         <p class="error">Wrong user or password</p>
@@ -34,7 +33,7 @@
 
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-success">Login</button>
+            <button type="submit" class="btn btn-success" style="width:80px;">Login</button>
             <span><a th:href="@{/register}" class="btn btn-success">Register</a> </span>
         </div>
     </form>
