@@ -1,17 +1,12 @@
 package library.rest;
 
-import library.entity.Author;
-import library.entity.Book;
-import library.entity.ContactDetails;
-import library.entity.PublishingHouse;
-import library.repository.AuthorRepository;
-import library.repository.BookRepository;
-import library.repository.ContactDetailsRepository;
-import library.repository.PublishingHouseRepository;
+import library.entity.*;
+import library.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Set;
 
@@ -29,6 +24,9 @@ public class BookController {
 
     @Autowired
     private ContactDetailsRepository contactDetailsRepository;
+
+    @Autowired
+    private RentalReturnDateRepository rentalReturnDateRepository;
 
     @PostMapping(value = "/book")
     public String saveBook(@RequestBody Book book) {
@@ -81,4 +79,41 @@ public class BookController {
         return bookRepository.findAByBookTitleContaining(bookTitle);
     }
 
+    @GetMapping(value = "/book/save")
+    public String saveBookForm(Model model) {
+        model.addAttribute("book", new Book());
+        return "add-books";
+    }
+
+    @PostMapping(value = "/book/save")
+    public String saveBook(@ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
+        if(book.getQuantity() > 0){
+            book.setAvailable(true);
+        }
+        bookRepository.save(book);
+        redirectAttributes.addFlashAttribute("message", "The book has been saved successfully.");
+        return "redirect:/book/save";
+    }
+    @GetMapping(value = "/book/rent/{id}")
+    public String rentBookForm(@PathVariable("id") Long id, Model model) {
+        Book book = bookRepository.getById(id);
+        RentalReturnDate rentalReturnDate = new RentalReturnDate();
+        rentalReturnDate.setReturnDate(rentalReturnDate.getRentalDate().plusDays(30));
+        model.addAttribute("rentalReturnDate", rentalReturnDate);
+        model.addAttribute("book", book);
+        return "rent-book";
+    }
+
+    @PostMapping(value = "/book/rent/{id}")
+    public String rentBookForm(@PathVariable("id") Long id, @ModelAttribute("rentalReturnDate")
+    @RequestBody RentalReturnDate rentalReturnDate, RedirectAttributes redirectAttributes) {
+        rentalReturnDate.setReturnDate(rentalReturnDate.getRentalDate().plusDays(30));
+        rentalReturnDateRepository.save(rentalReturnDate);
+        Book book = bookRepository.getById(id);
+        book.setRentalReturnDate(rentalReturnDate);
+        book.setQuantity(book.getQuantity() - 1);
+        bookRepository.save(book);
+        redirectAttributes.addFlashAttribute("message", "The book has been rented successfully.");
+        return "redirect:/book/rent/{id}";
+    }
 }

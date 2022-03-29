@@ -29,6 +29,9 @@ public class Book {
     @Column
     private boolean available;
 
+    @Column(nullable = false, length = 3)
+    private Integer quantity;
+
     @ManyToMany
     @JoinTable(
             name = "book_author",
@@ -46,5 +49,6 @@ public class Book {
     @ManyToOne
     private MyUser user;
 
-
+    @ManyToOne
+    private RentalReturnDate rentalReturnDate;
 }

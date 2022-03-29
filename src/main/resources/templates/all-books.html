@@ -66,24 +66,29 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Title</th>
+            <th scope="col">Genre</th>
             <th scope="col">Pages</th>
             <th scope="col">Language</th>
             <th scope="col">Available</th>
-            <th scope="col">Rental Date</th>
-            <th scope="col">Return Date</th>
-            <th scope="col">Full Name</th>
+            <th scope="col">Rent</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="book : ${books}">
             <td th:text="${book.id}"></td>
             <td th:text="${book.bookTitle}"></td>
+            <td th:text="${book.bookGenre}"></td>
             <td th:text="${book.pages}"></td>
             <td th:text="${book.language}"></td>
-            <td th:text="${book.available}? 'Available' : 'Is rented'"></td>
-            <td th:text="${book.rentalDate}"></td>
-            <td th:text="${book.returnDate}"></td>
-            <td th:text="${book.fullName}"></td>
+            <td th:text="${book.available ? 'Yes' : 'No'}"></td>
+            <td>
+                <a th:href="@{'/book/rent/' + ${book.id}}">
+                    <button type="button" class="btn btn-info"  data-toggle="tooltip" data-html="true" data-placement="top"
+                            th:attr="title=Rent +'&nbsp;'+'&quot;'+${book.bookTitle}+'&quot;'">
+                        Rent
+                    </button>
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>
