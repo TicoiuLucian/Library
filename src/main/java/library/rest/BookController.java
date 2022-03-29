@@ -3,6 +3,7 @@ package library.rest;
 import library.entity.*;
 import library.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -115,5 +116,12 @@ public class BookController {
         bookRepository.save(book);
         redirectAttributes.addFlashAttribute("message", "The book has been rented successfully.");
         return "redirect:/book/rent/{id}";
+    }
+
+
+    @Secured({ "ROLE_ADMIN", "ROLE_USER" })
+    @GetMapping(value ="/book/test")
+    public String test(){
+        return "test";
     }
 }
