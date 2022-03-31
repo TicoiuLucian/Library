@@ -1,10 +1,13 @@
-package library.service.impl;
+package library.service.user.impl;
 
 import library.entity.MyUser;
 import library.entity.Role;
 import library.repository.RoleRepository;
 import library.repository.UserRepository;
-import library.service.UserService;
+import library.service.email.BodyBuilderService;
+import library.service.email.EmailSender;
+import library.service.token.RandomTokenService;
+import library.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +21,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    @Autowired
+    BodyBuilderService bodyBuilderService;
+
+    @Autowired
+    EmailSender emailSender;
+
+    @Autowired
+    private RandomTokenService randomTokenService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
@@ -49,6 +61,8 @@ public class UserServiceImpl implements UserService {
     public MyUser saveUser(MyUser u) {
         MyUser user = new MyUser(u);
         user.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
+        user.setRandomToken(randomTokenService.randomToken());
+        emailSender.sendEmail(user.getEmail(), "Activate your Account", bodyBuilderService.emailBody(u) + "\n" + user.getRandomToken());
         u.getRoles().forEach(role -> {
             final Role roleByName = roleRepository.findByName(role.getName());
             if (roleByName == null)
@@ -59,7 +73,6 @@ public class UserServiceImpl implements UserService {
         });
         return userRepository.save(user);
     }
-
 
 
 }

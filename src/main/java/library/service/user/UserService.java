@@ -1,4 +1,4 @@
-package library.service;
+package library.service.user;
 
 import library.entity.MyUser;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ public interface UserService {
 
     MyUser findUserByEmail(String email);
 
-    MyUser findUserByUserName(String userName);
+    MyUser findUserByUserName(String username);
 
     boolean findUserByUserNameAndPassword(String userName, String password);
 
