@@ -36,6 +36,9 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
+                <a href="/book/save" class="btn btn-secondary btn-sm">Add book</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/contact">Contact</a>
             </li>
             <li class="nav-item dropdown">
@@ -84,7 +87,7 @@
             <td>
                 <a th:href="@{'/book/rent/' + ${book.id}}">
                     <button type="button" class="btn btn-info"  data-toggle="tooltip" data-html="true" data-placement="top"
-                            th:attr="title=Rent +'&nbsp;'+'&quot;'+${book.bookTitle}+'&quot;'">
+                            th:attr="title=Rent +'&nbsp;'+'&quot;'+${book.bookTitle}+'&quot;'" th:disabled="${book.quantity eq 0}">
                         Rent
                     </button>
                 </a>

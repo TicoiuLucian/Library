@@ -27,8 +27,8 @@
     <form action="#" th:action="@{'/book/rent/' + ${book.id}}" method="post" th:object="${rentalReturnDate}"
           style="max-width:400px; margin:0 auto">
 
-        <div th:if="${message}" class="alert alert-success text-center">
-            [[${message}]]
+        <div th:if="${message4}" class="alert alert-success text-center">
+            [[${message4}]]
             <div>
                 <a href="/">
                     <span class="glyphicon glyphicon-home"></span>
@@ -51,6 +51,19 @@
                 <div class="col-sm-8">
                     <input type="text" th:field="*{returnDate}" disabled/>
                 </div>
+            </div>
+
+            <div th:if="${message}" class="alert alert-danger text-center">
+                [[${message}]]
+            </div>
+            <div th:if="${message1}" class="alert alert-info text-center">
+                [[${message1}]]
+            </div>
+            <div th:if="${message2}" class="alert alert-info text-center">
+                [[${message2}]]
+            </div>
+            <div th:if="${message3}" class="alert alert-info text-center">
+                [[${message3}]]
             </div>
 
             <div class="text-center">

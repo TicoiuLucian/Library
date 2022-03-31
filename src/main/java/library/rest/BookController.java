@@ -1,6 +1,7 @@
 package library.rest;
 
 import library.entity.*;
+import library.exeptions.BookOutOfStock;
 import library.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -90,16 +91,30 @@ public class BookController {
     public String saveBook(@ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
         if(book.getQuantity() > 0){
             book.setAvailable(true);
+        }else if(book.getQuantity() == 0){
+            book.setAvailable(false);
         }
         bookRepository.save(book);
         redirectAttributes.addFlashAttribute("message", "The book has been saved successfully.");
-        return "redirect:/book/save";
+        return "redirect:/book/all";
     }
     @GetMapping(value = "/book/rent/{id}")
     public String rentBookForm(@PathVariable("id") Long id, Model model) {
         Book book = bookRepository.getById(id);
         RentalReturnDate rentalReturnDate = new RentalReturnDate();
         rentalReturnDate.setReturnDate(rentalReturnDate.getRentalDate().plusDays(30));
+        int[] quatity = {0, 1, 2, 3};
+        for (int i = 0; i < quatity.length; i++) {
+            if (book.getQuantity() == quatity[0]) {
+                model.addAttribute("message", "Out of stock!");
+            } else if (book.getQuantity() == quatity[1]) {
+                model.addAttribute("message1", "Last in stock!");
+            } else if (book.getQuantity() == quatity[2]) {
+                model.addAttribute("message2", "Last 2 in stock!");
+            } else if (book.getQuantity() == quatity[3]) {
+                model.addAttribute("message3", "Last 3 in stock");
+            }
+        }
         model.addAttribute("rentalReturnDate", rentalReturnDate);
         model.addAttribute("book", book);
         return "rent-book";
@@ -112,10 +127,18 @@ public class BookController {
         rentalReturnDateRepository.save(rentalReturnDate);
         Book book = bookRepository.getById(id);
         book.setRentalReturnDate(rentalReturnDate);
-        book.setQuantity(book.getQuantity() - 1);
+        try {
+            if (book.getQuantity() > 0) {
+                book.setQuantity(book.getQuantity() - 1);
+            } else {
+                throw new BookOutOfStock("The book is out of stock!");
+            }
+        } catch (BookOutOfStock boos) {
+            System.out.println(boos);
+        }
         bookRepository.save(book);
-        redirectAttributes.addFlashAttribute("message", "The book has been rented successfully.");
-        return "redirect:/book/rent/{id}";
+        redirectAttributes.addFlashAttribute("message4", "The book has been rented successfully.");
+        return "redirect:/book/all";
     }
 
 
