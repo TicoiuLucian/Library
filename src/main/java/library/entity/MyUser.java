@@ -71,7 +71,23 @@ public class MyUser implements UserDetails {
         this.books = user.getBooks();
         this.email = user.getEmail();
 
+    }
 
+    public MyUser(String username, String password, boolean accountNonExpired, boolean accountNonLocked,
+                  boolean credentialsNonExpired, boolean enabled, String fullName, ContactDetails contactDetails,
+                  String email, Set<Role> roles, Set<Book> books, String passwordConfirm) {
+        this.username = username;
+        this.password = password;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.enabled = enabled;
+        this.fullName = fullName;
+        this.contactDetails = contactDetails;
+        this.email = email;
+        this.roles = roles;
+        this.books = books;
+        this.passwordConfirm = passwordConfirm;
     }
 
 
