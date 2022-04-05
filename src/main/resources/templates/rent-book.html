@@ -21,8 +21,6 @@
 <br><br>
 <br><br>
 <div class="container-fluid">
-    <div class="text-center"><h2>Rent Book</h2></div>
-
 
     <form action="#" th:action="@{'/book/rent/' + ${book.id}}" method="post" th:object="${rentalReturnDate}"
           style="max-width:400px; margin:0 auto">
@@ -39,6 +37,10 @@
 
         <input type="hidden" th:field="*{id}">
         <div class="border border-secondary rounded p-3">
+            <div align="center">
+                <h5>Rent book</h5>
+                <h4><i> <p th:text="'&quot;'+${book.bookTitle}+'&quot;'" ></p></i></h4>
+            </div><br>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Rental date:</label>
                 <div class="col-sm-8">
@@ -67,7 +69,7 @@
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-success text-body"> Rent book</button>
+                <button type="submit" class="btn btn-success text-body" th:disabled="${book.quantity eq 0}"> Rent book</button>
             </div>
         </div>
     </form>

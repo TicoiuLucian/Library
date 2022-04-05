@@ -88,7 +88,7 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/save")
-    public String saveBook(@ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
+    public String saveBook(@ModelAttribute("book") @RequestBody Book book, RedirectAttributes redirectAttributes) {
         if(book.getQuantity() > 0){
             book.setAvailable(true);
         }else if(book.getQuantity() == 0){
@@ -96,7 +96,7 @@ public class BookController {
         }
         bookRepository.save(book);
         redirectAttributes.addFlashAttribute("message", "The book has been saved successfully.");
-        return "redirect:/book/all";
+        return "redirect:/book/save";
     }
     @GetMapping(value = "/book/rent/{id}")
     public String rentBookForm(@PathVariable("id") Long id, Model model) {
@@ -121,7 +121,7 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/rent/{id}")
-    public String rentBookForm(@PathVariable("id") Long id, @ModelAttribute("rentalReturnDate")
+    public String rentBook(@PathVariable("id") Long id, @ModelAttribute("rentalReturnDate")
     @RequestBody RentalReturnDate rentalReturnDate, RedirectAttributes redirectAttributes) {
         rentalReturnDate.setReturnDate(rentalReturnDate.getRentalDate().plusDays(30));
         rentalReturnDateRepository.save(rentalReturnDate);
@@ -136,8 +136,66 @@ public class BookController {
         } catch (BookOutOfStock boos) {
             System.out.println(boos);
         }
+        if(book.getQuantity() == 0){
+            book.setAvailable(false);
+        }
         bookRepository.save(book);
         redirectAttributes.addFlashAttribute("message4", "The book has been rented successfully.");
+        return "redirect:/book/all";
+    }
+
+    @GetMapping(value = "/book/{bookGenre}")
+    public String getBookByGenre(@PathVariable("bookGenre") BookGenre bookGenre, Model model) {
+        Set<Book> books = bookRepository.findByBookGenre(bookGenre);
+        if(books != null) {
+            model.addAttribute("books", books);
+            return "all-books";
+        }else{
+            return "all-books";
+        }
+    }
+
+    @GetMapping("/book/update/{id}")
+    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("book", bookRepository.getById(id));
+        return "update-book";
+    }
+
+    @RequestMapping("/book/update/{id}")
+    public String updateBook(@PathVariable("id") Long id,@ModelAttribute Book newBook, Model model) {
+        Book oldBook = bookRepository.getById(id);
+        try {
+            if (newBook.getBookTitle() != null) {
+                oldBook.setBookTitle(newBook.getBookTitle());
+            }
+            if (newBook.getPages() != null) {
+                oldBook.setPages(newBook.getPages());
+            }
+            if (newBook.getLanguage() != null) {
+                oldBook.setLanguage(newBook.getLanguage());
+            }
+            if (newBook.getQuantity() != null) {
+                if(newBook.getQuantity() == 0){
+                    oldBook.setAvailable(false);
+                }else{
+                    oldBook.setAvailable(true);
+                }
+                oldBook.setQuantity(newBook.getQuantity());
+            }
+            if (newBook.getBookGenre() != null) {
+                oldBook.setBookGenre(newBook.getBookGenre());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("book", oldBook);
+        bookRepository.save(oldBook);
+        return "redirect:/book/all";
+    }
+
+    @GetMapping("/book/delete/{id}")
+    public String deleteBook(@PathVariable("id") Long id, Model model) {
+        bookRepository.deleteById(id);
         return "redirect:/book/all";
     }
 
