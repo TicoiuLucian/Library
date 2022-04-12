@@ -17,7 +17,6 @@ public class BodyBuilderServiceImpl implements BodyBuilderService {
     public String emailBody(MyUser myUser) {
         return "Hello," +
                 "In order to activate your account please access the following link:\n" +
-                "http://localhost:8080/activation/" + myUser.getUsername() +
-                " \nand enter the following code:\n\n";
+                "http://localhost:8080/activation/" + myUser.getRandomToken();
     }
 }

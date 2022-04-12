@@ -45,6 +45,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsernameIgnoreCase(userName);
     }
 
+    public MyUser findUserByRandomToken(String randomToken) {
+        return userRepository.findByRandomToken(randomToken);
+    }
+
     public boolean findUserByUserNameAndPassword(String userName, String password) {
         final Optional<MyUser> myUser = Optional.ofNullable(userRepository.findByUsernameIgnoreCase(userName));
         return myUser.filter(user -> BCrypt.checkpw(password, user.getPassword())).isPresent();
@@ -61,8 +65,8 @@ public class UserServiceImpl implements UserService {
     public MyUser saveUser(MyUser u) {
         MyUser user = new MyUser(u);
         user.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
-        user.setRandomToken(randomTokenService.randomToken());
-        emailSender.sendEmail(user.getEmail(), "Activate your Account", bodyBuilderService.emailBody(u) + "\n" + user.getRandomToken());
+        user.setRandomToken(randomTokenService.randomToken(u));
+        emailSender.sendEmail(user.getEmail(), "Activate your Account", bodyBuilderService.emailBody(user));
         u.getRoles().forEach(role -> {
             final Role roleByName = roleRepository.findByName(role.getName());
             if (roleByName == null)

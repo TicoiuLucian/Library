@@ -17,23 +17,19 @@ public class ActivationController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping(value = "/activation/{username}")
-    public String registerForm(@PathVariable String username, Model model) {
+    @GetMapping(value = "/activation/{randomToken}")
+    public String registerForm(@PathVariable String randomToken, Model model) {
         MyUser myUser = new MyUser();
-        model.addAttribute("user", userService.findUserByUserName(username));
+        model.addAttribute("user", userService.findUserByRandomToken(randomToken));
         return "activation";
     }
 
-    @PostMapping(value = "/activation/{username}")
+    @PostMapping(value = "/activation/{randomToken}")
     public String registerUser(@ModelAttribute("user") @RequestBody MyUser user) {
-        user.setRandomToken(userService.findUserByUserName(user.getUsername()).getRandomToken());
-        if (user.getRandomToken().equals(user.getRandomTokenEmail())) {
-            userService.findUserByUserName(user.getUsername()).setEnabled(true);
-            userRepository.save(userService.findUserByUserName(user.getUsername()));
-            return "redirect:/index";
-        } else {
-            return "redirect:/activation/{username}";
-        }
+            userService.findUserByRandomToken(user.getRandomToken()).setEnabled(true);
+            userRepository.save(userService.findUserByRandomToken(user.getRandomToken()));
+            return "activation-success";
+
     }
 
 }

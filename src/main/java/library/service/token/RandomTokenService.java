@@ -1,6 +1,8 @@
 package library.service.token;
 
+import library.entity.MyUser;
+
 public interface
 RandomTokenService {
-    String randomToken();
+    String randomToken(MyUser user);
 }

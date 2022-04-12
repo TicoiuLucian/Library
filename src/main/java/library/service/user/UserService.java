@@ -12,6 +12,8 @@ public interface UserService {
 
     MyUser findUserByUserName(String username);
 
+    MyUser findUserByRandomToken(String randomToken);
+
     boolean findUserByUserNameAndPassword(String userName, String password);
 
     List<MyUser> findAll();
