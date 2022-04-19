@@ -1,6 +1,9 @@
 package library.entity;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +15,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString
 public class MyUser implements UserDetails {
 
     @Id
@@ -45,6 +51,12 @@ public class MyUser implements UserDetails {
     @Column(nullable = false, length = 30, unique = true)
     private String email;
 
+    @Column
+    private String randomToken;
+
+    @Transient
+    private String randomTokenEmail;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -71,23 +83,7 @@ public class MyUser implements UserDetails {
         this.books = user.getBooks();
         this.email = user.getEmail();
 
-    }
 
-    public MyUser(String username, String password, boolean accountNonExpired, boolean accountNonLocked,
-                  boolean credentialsNonExpired, boolean enabled, String fullName, ContactDetails contactDetails,
-                  String email, Set<Role> roles, Set<Book> books, String passwordConfirm) {
-        this.username = username;
-        this.password = password;
-        this.accountNonExpired = accountNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.enabled = enabled;
-        this.fullName = fullName;
-        this.contactDetails = contactDetails;
-        this.email = email;
-        this.roles = roles;
-        this.books = books;
-        this.passwordConfirm = passwordConfirm;
     }
 
 
@@ -95,59 +91,6 @@ public class MyUser implements UserDetails {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public void setAccountNonExpired(Boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -156,51 +99,4 @@ public class MyUser implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public ContactDetails getContactDetails() {
-        return contactDetails;
-    }
-
-    public void setContactDetails(ContactDetails contactDetails) {
-        this.contactDetails = contactDetails;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
 }

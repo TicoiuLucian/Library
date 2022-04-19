@@ -1,9 +1,9 @@
-package library.service.impl;
+package library.service.user.impl;
 
 
 import library.entity.MyUser;
 import library.entity.Role;
-import library.service.UserService;
+import library.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,8 +27,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        MyUser user = userService.findUserByUserName(userName);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        MyUser user = userService.findUserByUserName(username);
         List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }

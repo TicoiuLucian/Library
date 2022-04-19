@@ -1,6 +1,6 @@
 package library.config;
 
-import library.service.impl.CustomUserDetailsService;
+import library.service.user.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/register").permitAll()
+                .antMatchers("/login", "/register","/activation/**","/activation-success").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

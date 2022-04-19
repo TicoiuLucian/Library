@@ -1,10 +1,13 @@
-package library.service.impl;
+package library.service.user.impl;
 
 import library.entity.MyUser;
 import library.entity.Role;
 import library.repository.RoleRepository;
 import library.repository.UserRepository;
-import library.service.UserService;
+import library.service.email.BodyBuilderService;
+import library.service.email.EmailSender;
+import library.service.token.RandomTokenService;
+import library.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +23,15 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Autowired
+    BodyBuilderService bodyBuilderService;
+
+    @Autowired
+    EmailSender emailSender;
+
+    @Autowired
+    private RandomTokenService randomTokenService;
+
+    @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -31,6 +43,10 @@ public class UserServiceImpl implements UserService {
 
     public MyUser findUserByUserName(String userName) {
         return userRepository.findByUsernameIgnoreCase(userName);
+    }
+
+    public MyUser findUserByRandomToken(String randomToken) {
+        return userRepository.findByRandomToken(randomToken);
     }
 
     public boolean findUserByUserNameAndPassword(String userName, String password) {
@@ -49,6 +65,8 @@ public class UserServiceImpl implements UserService {
     public MyUser saveUser(MyUser u) {
         MyUser user = new MyUser(u);
         user.setPassword(new BCryptPasswordEncoder().encode(u.getPassword()));
+        user.setRandomToken(randomTokenService.randomToken(u));
+        emailSender.sendEmail(user.getEmail(), "Activate your Account", bodyBuilderService.emailBody(user));
         u.getRoles().forEach(role -> {
             final Role roleByName = roleRepository.findByName(role.getName());
             if (roleByName == null)
@@ -59,7 +77,6 @@ public class UserServiceImpl implements UserService {
         });
         return userRepository.save(user);
     }
-
 
 
 }
